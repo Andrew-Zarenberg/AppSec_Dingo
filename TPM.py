@@ -1,14 +1,28 @@
+from Crypto.Cipher import AES
 
 class TPM:
 
-    def __init__():
-        return
+    key = "This is a key123"
+    iv = 'This is an IV456'
 
-    def encrypt(n):
-        return
+    def encrypt(self, n):
+        encryption = AES.new(self.key, AES.MODE_CBC, self.iv)
+        result = encryption.encrypt(n)
+        return result
 
-    def decrypt(n):
-        return
+    def decrypt(self, n):
+        decryption = AES.new(self.key, AES.MODE_CBC, self.iv)
+        result = decryption.decrypt(n)
+        return result
 
 
 
+if __name__ == "__main__":
+    a = "1234567890123456"
+
+    t = TPM()
+    b = t.encrypt(a)
+    print(b)
+    c = t.decrypt(b)
+
+    print(c)
