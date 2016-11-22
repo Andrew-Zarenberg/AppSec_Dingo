@@ -72,7 +72,6 @@ class TPM:
 		for row in fobj:
 			cnt +=1
 			if (cnt == 18):
-				print row[1]
 				break
 	return str(row[1])
 
