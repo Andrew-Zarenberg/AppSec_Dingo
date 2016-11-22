@@ -35,6 +35,9 @@ import argparse
 import toto.util
 import toto.runlib
 import toto.log as log
+import TPM
+
+tpm = TPM.TPM()
 
 def _die(msg, exitcode=1):
   log.error(msg)
@@ -85,6 +88,11 @@ def in_toto_run(step_name, key_path, material_list, product_list,
 
   try:
     log.doing("store metadata...")
+
+    # store to TPM also
+    value = link.products["foo.py"]["sha256"]
+    tpm.extend(value)
+
     link.dump()
   except Exception, e:
     _die("in store metadata - %s" % e)
