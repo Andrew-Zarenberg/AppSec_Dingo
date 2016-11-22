@@ -1,0 +1,6 @@
+six
+simple-settings
+attrs
+canonicaljson
+python-dateutil
+iso8601
