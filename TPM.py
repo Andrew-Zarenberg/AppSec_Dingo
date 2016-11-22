@@ -2,17 +2,27 @@ from Crypto.Cipher import AES
 
 class TPM:
 
+    file_name = "TPMfile"
+
     key = "This is a key123"
     iv = 'This is an IV456'
 
     def writeToTPM(self, n):
         encrypted_value = self.encrypt(n)
-        # write to file
-        return true # or false if it fails
 
-    def readFromTPM(self, n):
+        # write to file
+        f = open(self.file_name, 'w')
+        f.write(encrypted_value)
+
+        return True # or false if it fails
+
+    def readFromTPM(self):
+
         # read from file
-        decrypted_value = self.decrypt(n)
+        f = open(self.file_name, 'r')
+        value = f.read()
+
+        decrypted_value = self.decrypt(value)
         return decrypted_value
 
     def encrypt(self, n):
@@ -31,8 +41,15 @@ if __name__ == "__main__":
     a = "1234567890123456"
 
     t = TPM()
+    t.writeToTPM(a)
+    print(t.readFromTPM())
+    
+
+    """
+    t = TPM()
     b = t.encrypt(a)
     print(b)
     c = t.decrypt(b)
 
     print(c)
+"""
