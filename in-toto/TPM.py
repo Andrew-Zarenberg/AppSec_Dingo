@@ -47,8 +47,6 @@ class TPM:
 					baseSTR = "PCR -18"
 					regVal = n
 					foo = [baseSTR,regVal]
-					print foo
-					print "this is foo"
 					data.append(foo)
 				else:
 					data.append(row)
