@@ -1,10 +1,11 @@
 from Crypto.Cipher import AES
 import hashlib
+import csv
 
 class TPM:
 
     # TODO: figure out file name
-    file_name = "TPMfile"
+    file_name = "TPM.csv"
 
     # TODO: remove later
     key = "This is a key123"
@@ -14,17 +15,50 @@ class TPM:
 
     def __init__(self):
         # Every time TPM is re-initialized, registers should be reset
+	with open(self.file_name,'w') as f:
+		fobj = csv.writer(f)
+		for x in range(0,17):
+			baseSTR = "PCR -"+ str(x)
+			regVal = "0000000000000000000000000000000000000000"
+			data = [baseSTR,regVal]
+			fobj.writerow(data)
+		for y in range(18,23):
+			baseSTR = "PCR -" + str(y)
+			regVal = "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+			data = [baseSTR,regVal]
+			fobj.writerow(data)
+		baseSTR = "PCR -23"
+		regVal = "0000000000000000000000000000000000000000"
+    		data = [baseSTR,regVal]
+                fobj.writerow(data)
+	return
 
-        # TODO: clear file
-        return
-
-    
     def writeToTPM(self, n):
         # Ensure that the data is valid
         if(self.validate_data(n)):
-            f = open(self.file_name, 'w')
-            f.write(n)
-            return True
+        	with open(self.file_name, 'r+') as f:
+            		fobj = csv.reader(f)
+			cnt = 0
+			data = []
+			for row in fobj:
+				foo =[]
+				cnt += 1
+				if (cnt == 18):
+					baseSTR = "PCR -18"
+					regVal = n
+					foo = [baseSTR,regVal]
+					print foo
+					print "this is foo"
+					data.append(foo)
+				else:
+					data.append(row)
+			f.close()
+		with open(self.file_name,'w') as f:
+			fobj=csv.writer(f)
+			fobj.writerows(data)
+		return True
+	else:
+		return False
             
         # if data is not valid, return false
         return False
@@ -32,9 +66,15 @@ class TPM:
     # Reads the contents of the TPM and returns the register values
     def readFromTPM(self):
         # read from file
-        f = open(self.file_name, 'r')
-        value = f.read()
-        return value
+        with open(self.file_name,'r') as f:
+		fobj = csv.reader(f)
+		cnt = 0
+		for row in fobj:
+			cnt +=1
+			if (cnt == 18):
+				print row[1]
+				break
+	return str(row[1])
 
     # TODO: REMOVE THIS 
     # Takes data as an input and returns the encrypted value
