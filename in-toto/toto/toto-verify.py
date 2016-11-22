@@ -31,6 +31,14 @@ import toto.verifylib
 import toto.log as log
 from toto.models.layout import Layout
 
+sys.path.append("../")
+import TPM
+
+tpm = TPM.TPM("../TPM.csv")
+
+my_tpm = TPM.TPM("TPM.csv")
+my_tpm.clearTPM()
+
 def _die(msg, exitcode=1):
   log.failing(msg)
   sys.exit(exitcode)
@@ -61,12 +69,30 @@ def in_toto_verify(layout_path, layout_key_paths):
   try:
     log.doing("verify layout signatures...")
     toto.verifylib.verify_layout_signatures(layout, layout_key_dict)
+
+    value = layout.import_step_metadata_from_files_as_dict()["write-code"].products["foo.py"]["sha256"]
+
+    my_tpm.extend(value)
+
+    # if the TPM values are the same, that means it is verified
+    if tpm.readFromTPM() == my_tpm.readFromTPM():
+      print("TPM: Stored signatures match.")
+    else:
+      print("TPM: ERROR: Stored signatures DO NOT match!!!")
+
+    print("Existing entry from TPM: ")
+    print(tpm.readFromTPM())
+
+    print("This entry from TPM:")
+    print(my_tpm.readFromTPM())
+
   except Exception, e:
     _die("in verify layout signatures - %s" % e)
 
   try:
     log.doing("load link metadata for steps...")
     step_link_dict = layout.import_step_metadata_from_files_as_dict()
+
   except Exception, e:
     _die("in load link metadata - %s" % e)
 

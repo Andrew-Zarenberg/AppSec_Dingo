@@ -35,9 +35,13 @@ import argparse
 import toto.util
 import toto.runlib
 import toto.log as log
+
+sys.path.append("../")
 import TPM
 
-tpm = TPM.TPM()
+
+tpm = TPM.TPM("../TPM.csv")
+
 
 def _die(msg, exitcode=1):
   log.error(msg)
@@ -48,6 +52,7 @@ def in_toto_run(step_name, key_path, material_list, product_list,
   """Load link signing private keys from disk and runs passed command, storing
   its materials, by-products and return value, and products into link metadata
   file. The link metadata file is signed and stored to disk. """
+
   try:
     log.doing("load link signing key...")
     key = toto.util.prompt_import_rsa_key_from_file(key_path)
@@ -91,6 +96,7 @@ def in_toto_run(step_name, key_path, material_list, product_list,
 
     # store to TPM also
     value = link.products["foo.py"]["sha256"]
+
     tpm.extend(value)
 
     link.dump()
@@ -135,8 +141,8 @@ def main():
 
   args = parser.parse_args()
 
-  in_toto_run(args.step_name, args.key, args.materials, args.products,
-      args.link_cmd, args.record_byproducts)
+  in_toto_run(args.step_name, args.key, args.materials, args.products, 
+              args.link_cmd, args.record_byproducts)
 
 if __name__ == '__main__':
   main()

@@ -4,6 +4,17 @@ import subprocess
 import argparse
 from shutil import copyfile
 
+sys.path.append("../")
+import TPM
+
+
+# Clear the TPMs at the beginning
+my_tpm = TPM.TPM("TPM.csv")
+my_tpm.clearTPM()
+
+tpm = TPM.TPM("../TPM.csv")
+tpm.clearTPM()
+
 NO_PROMPT = False
 
 def prompt_key(prompt):
@@ -34,6 +45,7 @@ def supply_chain():
   subprocess.call(write_code_cmd.split())
   copyfile("foo.py", "../functionary_carl/foo.py")
 
+  
 
   prompt_key("Package (Carl)")
   os.chdir("../functionary_carl")

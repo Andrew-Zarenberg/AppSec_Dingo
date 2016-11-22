@@ -9,6 +9,7 @@ test/test_toto_run.py
 test/test_toto_verify.py
 test/test_util.py
 test/test_verifylib.py
+toto/TPM.py
 toto/__init__.py
 toto/bundlelib.py
 toto/exceptions.py

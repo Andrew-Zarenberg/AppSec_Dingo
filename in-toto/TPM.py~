@@ -5,7 +5,7 @@ import csv
 class TPM:
 
     # TODO: figure out file name
-    file_name = "TPM.csv"
+    file_name = "../TPM.csv"
 
     # TODO: remove later
     key = "This is a key123"

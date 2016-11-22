@@ -13,10 +13,10 @@ class TPM:
 
     PCR_REGISTER_LENGTH = 40
 
-    def __init__(self, name):
-        self.file_name = name
+    def __init__(self):
+        return
 
-    def clearTPM(self):
+    def clearTPMhdsfuiyhtiuehr(self):
         # Every time TPM is re-initialized, registers should be reset
 	with open(self.file_name,'w') as f:
 		fobj = csv.writer(f)
