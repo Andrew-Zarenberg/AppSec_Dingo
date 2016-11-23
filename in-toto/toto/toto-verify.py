@@ -37,7 +37,7 @@ import TPM
 tpm = TPM.TPM("../TPM.csv")
 
 my_tpm = TPM.TPM("TPM.csv")
-my_tpm.clearTPM()
+#my_tpm.clearTPM()
 
 def _die(msg, exitcode=1):
   log.failing(msg)
@@ -71,8 +71,6 @@ def in_toto_verify(layout_path, layout_key_paths):
     toto.verifylib.verify_layout_signatures(layout, layout_key_dict)
 
     value = layout.import_step_metadata_from_files_as_dict()["write-code"].products["foo.py"]["sha256"]
-
-    my_tpm.extend(value)
 
     # if the TPM values are the same, that means it is verified
     if tpm.readFromTPM() == my_tpm.readFromTPM():

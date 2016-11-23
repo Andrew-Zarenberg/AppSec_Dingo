@@ -53,6 +53,23 @@ def in_toto_run(step_name, key_path, material_list, product_list,
   its materials, by-products and return value, and products into link metadata
   file. The link metadata file is signed and stored to disk. """
 
+  if tpm.readFromTPM(23) == str(0):
+    tpm.set_register_23()
+    log.doing("TPM: First time running - creating entry for register 23.")
+  elif tpm.check_register_23():
+    log.doing("TPM: Check passed.")
+  else:
+    log.doing("TPM: Check failed.  Exiting.")
+    sys.exit()
+
+  """
+  if tpm.initialize_register_23():
+    log.doing("TPM check passed.")
+  else:
+    log.doing("TPM check failed, exiting.")
+    sys.exit()
+  """
+
   try:
     log.doing("load link signing key...")
     key = toto.util.prompt_import_rsa_key_from_file(key_path)
@@ -96,8 +113,6 @@ def in_toto_run(step_name, key_path, material_list, product_list,
 
     # store to TPM also
     value = link.products["foo.py"]["sha256"]
-
-    tpm.extend(value)
 
     link.dump()
   except Exception, e:

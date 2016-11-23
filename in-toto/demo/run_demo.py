@@ -10,10 +10,10 @@ import TPM
 
 # Clear the TPMs at the beginning
 my_tpm = TPM.TPM("TPM.csv")
-my_tpm.clearTPM()
+#my_tpm.clearTPM()
 
 tpm = TPM.TPM("../TPM.csv")
-tpm.clearTPM()
+#tpm.clearTPM()
 
 NO_PROMPT = False
 
