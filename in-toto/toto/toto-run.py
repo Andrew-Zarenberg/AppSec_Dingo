@@ -41,6 +41,7 @@ import TPM
 
 
 tpm = TPM.TPM("../TPM.csv")
+#tpm = TPM.TPM("TPM.csv")
 
 
 def _die(msg, exitcode=1):
