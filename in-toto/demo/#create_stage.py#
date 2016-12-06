@@ -41,12 +41,30 @@ def supply_chain():
   #prompt_key("Write code (Bob)")
   #prompt_key("Write code stage")
   os.chdir("../functionary_bob")
+
+
+
+  tpm_cmd = "cat foo.py"
+  subprocess.call(tpm_cmd.split())
+
+  write_code_cmd = ("python -m toto.toto-run" +
+                    " --step-name write-code --products "
+                    + file_name +
+                    " --key bob -- echo Working")
+  """
   write_code_cmd = ("python -m toto.toto-run" +
                     " --step-name write-code --products "
                     + file_name +
                     " --key bob -- vi " +
                     file_name)
-  print write_code_cmd
+  """
+
+
+  with open("foo.py", 'r') as content_file:
+    content = content_file.read()
+    tpm.extend(content)
+
+
   subprocess.call(write_code_cmd.split())
   copyfile(file_name, "../functionary_carl/" + file_name)
 

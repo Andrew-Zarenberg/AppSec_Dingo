@@ -11,10 +11,10 @@ import TPM
 file_name = "foo.py"
 
 # Clear the TPMs at the beginning
-my_tpm = TPM.TPM("TPM2.csv")
+my_tpm = TPM.TPM("TPM.csv")
 #my_tpm.clearTPM()
 
-tpm = TPM.TPM("../TPM2.csv")
+tpm = TPM.TPM("../TPM.csv")
 #tpm.clearTPM()
 
 NO_PROMPT = False
@@ -32,6 +32,15 @@ def prompt_key(prompt):
 
 def supply_chain():
 
+    # This stores the current TPM in a temporary place,
+    # and places it back once it's done.
+    copy_cur_tpm_cmd = "cp TPM.csv TPM2.csv"
+    copy_blank_tpm_cmd = "cp blank_TPM.csv TPM.csv"
+    copy_back_tpm_cmd = "cp TPM2.csv TPM.csv"
+    subprocess.call(copy_cur_tpm_cmd.split())
+    subprocess.call(copy_blank_tpm_cmd.split())
+
+
     #prompt_key("Define supply chain layout (Alice)")
     os.chdir("owner_alice")
     create_layout_cmd = "python create_layout.py"
@@ -44,9 +53,14 @@ def supply_chain():
     write_code_cmd = ("python -m toto.toto-run" +
                       " --step-name write-code --products "
                       + file_name +
-                      " --key bob -- vi " +
-                      file_name)
-    print write_code_cmd
+                      " --key bob -- echo Working")
+
+    with open("foo.py", 'r') as content_file:
+      content = content_file.read()
+      tpm.extend(content)
+
+    tpm_val_new = tpm.readFromTPM()
+
     subprocess.call(write_code_cmd.split())
     copyfile(file_name, "../functionary_carl/" + file_name)
 
@@ -73,9 +87,6 @@ def supply_chain():
     copyfile("functionary_carl/foo.tar.gz", "final_product/foo.tar.gz")
 
 
-
-
-
     #prompt_key("Verify final product (client)")
     os.chdir("final_product")
     copyfile("../owner_alice/alice.pub", "alice.pub")
@@ -87,8 +98,28 @@ def supply_chain():
     print "Return value: " + str(retval)
 
 
-    """
+    os.chdir("..")
 
+
+
+    with open("TPM.csv", 'r') as content_file:
+      tpm_original_content = content_file.read()
+
+    with open("TPM2.csv", 'r') as content_file:
+      tpm_2_content = content_file.read()
+
+    print "\n\n=========================\n"
+    if tpm_original_content == tpm_2_content:
+      print "TPM signatures match!!!"
+    else:
+      print "WARNING: TPM signatures DO NOT match!!!"
+
+    print "\n\n=========================\n"
+
+
+    subprocess.call(copy_back_tpm_cmd.split())
+
+    """
 
     prompt_key("Tampering with the supply chain")
     os.chdir("../functionary_bob")

@@ -40,7 +40,7 @@ def supply_chain():
   os.chdir("../functionary_bob")
   write_code_cmd = ("python -m toto.toto-run" +
                     " --step-name write-code --products foo.py" +
-                    " --key bob -- vi foo.py")
+                    " --key bob -- emacs foo.py")
   print write_code_cmd
   subprocess.call(write_code_cmd.split())
   copyfile("foo.py", "../functionary_carl/foo.py")
