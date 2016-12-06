@@ -2,7 +2,7 @@
 In-Toto and Trusted Platform Modules
 
 Run these commands:
-
+```
 # Make sure you have git, python and pip installed on your system
 # and get in-toto
 git clone -b develop --recursive https://github.com/Andrew-Zarenberg/AppSec_Dingo.git
@@ -36,9 +36,10 @@ python create_stage.py
 
 # ATTENTION: Here you can either modify the same functionary_bob/foo.py file, which will generate a TPM signature error when the following command is run, or you can go ahead and run the command and it should pass.
 python verify_stage.py
-
+```
 
 If you are having trouble getting it to work, here is a link to the original in-toto GitHub repository with installation instructions: https://github.com/in-toto/in-toto/tree/develop/demo
 
 If you are still having issues, please email:
 Andrew Zarenberg <az1148@nyu.edu>
+Jillian Spataro <jas1297@nyu.edu>
